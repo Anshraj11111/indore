@@ -1,0 +1,851 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magical Greeting</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc, #2575fc, #6a11cb);
+            background-size: 400% 400%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            animation: gradientBG 18s ease infinite;
+            perspective: 1000px;
+            padding: 20px;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 25px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+            text-align: center;
+            overflow: hidden;
+            z-index: 10;
+            transform: scale(0.95);
+            animation: containerFloat 8s ease-in-out infinite;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes containerFloat {
+            0%, 100% { transform: translateY(0) scale(0.95) rotate(0.5deg); }
+            50% { transform: translateY(-20px) scale(1) rotate(-0.5deg); }
+        }
+
+        .magic-button {
+            position: relative;
+            padding: 18px 45px;
+            font-size: 1.8rem;
+            border: none;
+            border-radius: 60px;
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            color: white;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 12px 30px rgba(255, 126, 95, 0.6);
+            overflow: hidden;
+            z-index: 2;
+            font-weight: 600;
+            letter-spacing: 1px;
+            animation: pulse 2.5s infinite;
+            font-family: 'Poppins', sans-serif;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 126, 95, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(255, 126, 95, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 126, 95, 0); }
+        }
+
+        .magic-button:hover {
+            transform: translateY(-6px) scale(1.05);
+            box-shadow: 0 18px 40px rgba(255, 126, 95, 0.8);
+        }
+
+        .magic-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            transition: 0.8s;
+        }
+
+        .magic-button:hover::before {
+            left: 100%;
+        }
+
+        .message-box {
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.75);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            transform: scale(0);
+            opacity: 0;
+            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .message-box.active {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 25px;
+            color: #ff6b6b;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e, #4ecdc4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: textGlow 3s ease-in-out infinite alternate;
+            font-family: 'Dancing Script', cursive;
+            letter-spacing: 1px;
+            transform: translateX(-100vw);
+            opacity: 0;
+            transition: all 1s ease-out;
+        }
+
+        @keyframes textGlow {
+            0% { 
+                text-shadow: 0 0 8px rgba(255, 107, 107, 0.6); 
+                transform: scale(1);
+            }
+            50% { 
+                text-shadow: 0 0 30px rgba(255, 107, 107, 0.9), 
+                            0 0 45px rgba(255, 142, 142, 0.7);
+                transform: scale(1.05);
+            }
+            100% { 
+                text-shadow: 0 0 8px rgba(255, 107, 107, 0.6); 
+                transform: scale(1);
+            }
+        }
+
+        p {
+            font-size: 1.3rem;
+            line-height: 1.7;
+            margin-bottom: 25px;
+            color: #555;
+            opacity: 0;
+            transform: translateY(40px) rotateX(90deg);
+            transition: all 0.8s ease;
+            font-weight: 300;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .connect-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 35px;
+            font-size: 1.3rem;
+            text-decoration: none;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            border-radius: 60px;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 25px rgba(37, 117, 252, 0.5);
+            opacity: 0;
+            transform: translateY(60px) rotate(5deg);
+            margin-top: 15px;
+        }
+
+        .connect-btn:hover {
+            transform: translateY(-6px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(37, 117, 252, 0.7);
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .sparkle-element {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 0 15px gold;
+            opacity: 0;
+            animation: floatSparkle 10s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes floatSparkle {
+            0% {
+                transform: translateY(100vh) rotate(0deg) scale(0.5);
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(40vh) rotate(180deg) scale(1.5);
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg) scale(0.8);
+                opacity: 0;
+            }
+        }
+
+        .balloon-element {
+            position: absolute;
+            width: 50px;
+            height: 60px;
+            border-radius: 50%;
+            opacity: 0;
+            animation: floatBalloon 15s linear infinite;
+            z-index: 1;
+        }
+
+        .balloon-element::before {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        @keyframes floatBalloon {
+            0% {
+                transform: translateY(100vh) rotate(0deg) scale(0.8);
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(40vh) rotate(5deg) scale(1);
+            }
+            100% {
+                transform: translateY(-100px) rotate(10deg) scale(0.9);
+                opacity: 0;
+            }
+        }
+
+        .flower-element {
+            position: absolute;
+            font-size: 2.5rem;
+            opacity: 0;
+            animation: floatFlower 18s linear infinite;
+            z-index: 1;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes floatFlower {
+            0% {
+                transform: translateY(100vh) rotate(0deg) scale(0.6);
+                opacity: 0.7;
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(40vh) rotate(180deg) scale(1.1);
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg) scale(0.8);
+                opacity: 0;
+            }
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: sparkle 1.2s linear forwards;
+            z-index: 5;
+            box-shadow: 0 0 12px currentColor;
+        }
+
+        @keyframes sparkle {
+            0% { transform: scale(0.3) translateY(0); opacity: 1; }
+            50% { transform: scale(1.5) translateY(-100px); opacity: 0.8; }
+            100% { transform: scale(1) translateY(-200px); opacity: 0; }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: #f00;
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+            opacity: 0;
+            animation: confettiFall 6s linear forwards;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-100px) rotate(0deg) scale(0.8); opacity: 1; }
+            50% { transform: translateY(50vh) rotate(360deg) scale(1.2); }
+            100% { transform: translateY(100vh) rotate(720deg) scale(0.9); opacity: 0; }
+        }
+
+        .floating-text {
+            position: absolute;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.85);
+            opacity: 0;
+            animation: floatText 16s linear infinite;
+            text-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        @keyframes floatText {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0.7;
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(40vh) rotate(5deg);
+            }
+            100% {
+                transform: translateY(-100px) rotate(10deg);
+                opacity: 0;
+            }
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            animation: floatBubble 20s infinite ease-in-out;
+            z-index: 0;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes floatBubble {
+            0%, 100% { transform: translateY(0) translateX(0) scale(1); }
+            25% { transform: translateY(-60px) translateX(30px) scale(1.1); }
+            50% { transform: translateY(-120px) translateX(-30px) scale(0.9); }
+            75% { transform: translateY(-60px) translateX(20px) scale(1.05); }
+        }
+
+        .emoji {
+            display: inline-block;
+            animation: wave 2.5s infinite;
+            transform-origin: 70% 70%;
+        }
+
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            10% { transform: rotate(16deg); }
+            20% { transform: rotate(-10deg); }
+            30% { transform: rotate(16deg); }
+            40% { transform: rotate(-6deg); }
+            50% { transform: rotate(12deg); }
+            60% { transform: rotate(0deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease 1.6s;
+        }
+
+        .social-icon {
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 50%;
+            font-size: 26px;
+            color: #ff6b6b;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            transform: translateY(0);
+        }
+
+        .social-icon:hover {
+            transform: translateY(-8px) rotate(5deg);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+        }
+
+        .signature {
+            margin-top: 30px;
+            font-style: italic;
+            color: #777;
+            font-size: 1.2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease 1.9s;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.6rem;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-box.active h1 {
+            transform: translateX(0);
+            opacity: 1;
+            transition-delay: 0.3s;
+        }
+
+        .message-box.active p {
+            transform: translateY(0) rotateX(0);
+            opacity: 1;
+            transition-delay: 0.7s;
+        }
+
+        .message-box.active .connect-btn {
+            transform: translateY(0) rotate(0);
+            opacity: 1;
+            transition-delay: 1.1s;
+        }
+
+        .message-box.active .social-icons {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .message-box.active .signature {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .magic-text {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            opacity: 0.8;
+            animation: fadeInOut 4s infinite;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Enhanced zoom effect */
+        .zoom-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 20%, rgba(0,0,0,0.1) 100%);
+            pointer-events: none;
+            animation: zoomEffect 15s infinite ease-in-out;
+            z-index: 0;
+        }
+
+        @keyframes zoomEffect {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.2); opacity: 0.1; }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .container {
+                padding: 35px;
+            }
+            
+            h1 {
+                font-size: 3.2rem;
+            }
+            
+            p {
+                font-size: 1.25rem;
+            }
+            
+            .connect-btn {
+                font-size: 1.2rem;
+                padding: 14px 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .magic-button {
+                padding: 16px 35px;
+                font-size: 1.6rem;
+            }
+            
+            h1 {
+                font-size: 2.8rem;
+            }
+            
+            p {
+                font-size: 1.15rem;
+                margin-bottom: 20px;
+            }
+            
+            .message-box {
+                padding: 25px 20px;
+            }
+            
+            .social-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+            
+            .signature {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .magic-button {
+                padding: 14px 30px;
+                font-size: 1.4rem;
+            }
+            
+            h1 {
+                font-size: 2.4rem;
+            }
+            
+            p {
+                font-size: 1.05rem;
+                line-height: 1.6;
+            }
+            
+            .connect-btn {
+                padding: 12px 25px;
+                font-size: 1.1rem;
+            }
+            
+            .social-icons {
+                gap: 15px;
+            }
+            
+            .social-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 22px;
+            }
+            
+            .signature {
+                font-size: 1.3rem;
+                margin-top: 25px;
+            }
+            
+            .magic-text {
+                font-size: 0.9rem;
+                bottom: 15px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .magic-button {
+                padding: 12px 25px;
+                font-size: 1.2rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            p {
+                font-size: 0.95rem;
+            }
+            
+            .connect-btn {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+            
+            .social-icons {
+                gap: 12px;
+            }
+            
+            .social-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+            
+            .signature {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Performance optimization for mobile */
+        @media (max-width: 768px) {
+            .floating-text, .bubble {
+                display: none;
+            }
+            
+            .flower-element {
+                font-size: 1.8rem;
+            }
+        }
+        /* CSS remains unchanged */
+    </style>
+</head>
+<body>
+    <div class="zoom-layer"></div>
+    <div class="floating-elements" id="elementsContainer"></div>
+    <div class="container">
+        <button class="magic-button" id="revealBtn">
+            <i class="fas fa-wand-magic-sparkles"></i> Reveal Magic ✨
+        </button>
+
+        <div class="message-box" id="messageBox">
+            <h1 id="typingText"></h1>
+            <p>I created this magical moment just for you! ✨<br><br>
+                Your positive energy is truly inspiring, and I wanted to reach out.<br>
+                No expectations - just good vibes and warm wishes! 😊</p>
+
+            <a href="https://www.instagram.com/_rajansh_10?igsh=cDZmMzlidTNtcXZv" target="_blank" class="connect-btn">
+                <i class="fab fa-instagram"></i> Connect
+            </a>
+
+            <div class="social-icons">
+                <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
+            </div>
+
+            <div class="signature">
+                Made with ❤️ for you
+            </div>
+        </div>
+    </div>
+
+    <div class="magic-text">Tap the button to reveal the magic...</div>
+
+    <audio id="bgMusic" loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-dreams.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const btn = document.getElementById('revealBtn');
+        const messageBox = document.getElementById('messageBox');
+        const body = document.body;
+        const elementsContainer = document.getElementById('elementsContainer');
+        const bgMusic = document.getElementById('bgMusic');
+        const typingText = document.getElementById('typingText');
+
+        const typingMessage = "Hello Beautiful Soul! 👋";
+        let typingIndex = 0;
+
+        // Create background bubbles
+        for (let i = 0; i < 15; i++) {
+            createBubble();
+        }
+
+        const texts = ["Amazing!", "You're Awesome!", "Positive Vibes!", "Shine Bright!", "So Special!", "Beautiful Soul!"];
+        texts.forEach(text => {
+            createFloatingText(text);
+        });
+
+        for (let i = 0; i < 20; i++) {
+            createFloatingElement();
+        }
+
+        btn.addEventListener('click', () => {
+            bgMusic.play();
+
+            body.style.background = 'linear-gradient(135deg, #ff6b6b, #ff8e8e, #4ecdc4, #6a11cb)';
+            body.style.animation = 'gradientBG 12s ease infinite';
+
+            for (let i = 0; i < 60; i++) {
+                createSparkle();
+            }
+
+            for (let i = 0; i < 80; i++) {
+                createConfetti();
+            }
+
+            for (let i = 0; i < 40; i++) {
+                createFloatingElement();
+            }
+
+            setTimeout(() => {
+                messageBox.classList.add('active');
+                document.querySelector('.magic-text').style.display = 'none';
+                typeWriter();
+            }, 600);
+
+            btn.style.display = 'none';
+
+            setInterval(() => {
+                if (Math.random() > 0.7) createFloatingElement();
+            }, 800);
+        });
+
+        function typeWriter() {
+            if (typingIndex < typingMessage.length) {
+                typingText.innerHTML += typingMessage.charAt(typingIndex);
+                typingIndex++;
+                setTimeout(typeWriter, 100);
+            }
+        }
+
+        function createFloatingElement() {
+            const elementTypes = ['sparkle', 'balloon', 'flower'];
+            const type = elementTypes[Math.floor(Math.random() * elementTypes.length)];
+
+            let element;
+
+            if (type === 'sparkle') {
+                element = document.createElement('div');
+                element.classList.add('sparkle-element');
+                element.style.left = Math.random() * window.innerWidth + 'px';
+                element.style.backgroundColor = getRandomColor();
+                element.style.boxShadow = `0 0 20px ${getRandomColor()}`;
+                element.style.animationDuration = (Math.random() * 8 + 6) + 's';
+                element.style.animationDelay = Math.random() * 2 + 's';
+            }
+            else if (type === 'balloon') {
+                element = document.createElement('div');
+                element.classList.add('balloon-element');
+                element.style.left = Math.random() * window.innerWidth + 'px';
+                element.style.backgroundColor = getRandomColor();
+                element.style.width = (Math.random() * 40 + 30) + 'px';
+                element.style.height = (parseInt(element.style.width) * 1.2) + 'px';
+                element.style.borderRadius = '50% 50% 50% 50% / 40% 40% 60% 60%';
+                element.style.animationDuration = (Math.random() * 12 + 8) + 's';
+                element.style.animationDelay = Math.random() * 3 + 's';
+            }
+            else if (type === 'flower') {
+                element = document.createElement('div');
+                element.classList.add('flower-element');
+                element.innerHTML = getRandomFlower();
+                element.style.left = Math.random() * window.innerWidth + 'px';
+                element.style.color = getRandomColor();
+                element.style.animationDuration = (Math.random() * 15 + 10) + 's';
+                element.style.animationDelay = Math.random() * 4 + 's';
+            }
+
+            elementsContainer.appendChild(element);
+
+            setTimeout(() => {
+                element.remove();
+            }, 15000);
+        }
+
+        function getRandomFlower() {
+            const flowers = ['🌸', '🌹', '🌺', '🌻', '🌼', '🌷', '💐'];
+            return flowers[Math.floor(Math.random() * flowers.length)];
+        }
+
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.classList.add('sparkle');
+            sparkle.style.left = Math.random() * window.innerWidth + 'px';
+            sparkle.style.top = (Math.random() * window.innerHeight + 100) + 'px';
+            sparkle.style.backgroundColor = getRandomColor();
+            sparkle.style.width = Math.random() * 14 + 6 + 'px';
+            sparkle.style.height = sparkle.style.width;
+            document.body.appendChild(sparkle);
+
+            setTimeout(() => {
+                sparkle.remove();
+            }, 1200);
+        }
+
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            confetti.style.left = Math.random() * window.innerWidth + 'px';
+            confetti.style.top = '-20px';
+            confetti.style.backgroundColor = getRandomColor();
+            confetti.style.width = Math.random() * 20 + 12 + 'px';
+            confetti.style.height = confetti.style.width;
+            confetti.style.animationDuration = (Math.random() * 4 + 3) + 's';
+            document.body.appendChild(confetti);
+
+            setTimeout(() => {
+                confetti.remove();
+            }, 5000);
+        }
+
+        function createFloatingText(text) {
+            const floatingText = document.createElement('div');
+            floatingText.classList.add('floating-text');
+            floatingText.textContent = text;
+            floatingText.style.left = Math.random() * window.innerWidth + 'px';
+            floatingText.style.fontSize = Math.random() * 22 + 18 + 'px';
+            floatingText.style.color = getRandomColor();
+            floatingText.style.animationDuration = (Math.random() * 12 + 8) + 's';
+            floatingText.style.animationDelay = Math.random() * 5 + 's';
+            document.body.appendChild(floatingText);
+
+            setTimeout(() => {
+                floatingText.remove();
+                createFloatingText(texts[Math.floor(Math.random() * texts.length)]);
+            }, 15000);
+        }
+
+        function createBubble() {
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble');
+            const size = Math.random() * 180 + 60;
+            bubble.style.width = size + 'px';
+            bubble.style.height = size + 'px';
+            bubble.style.left = Math.random() * 100 + '%';
+            bubble.style.top = Math.random() * 100 + 'vh';
+            bubble.style.animationDelay = Math.random() * 7 + 's';
+            bubble.style.animationDuration = (Math.random() * 22 + 18) + 's';
+            bubble.style.backgroundColor = `rgba(255, 255, 255, ${Math.random() * 0.15 + 0.05})`;
+            document.body.appendChild(bubble);
+        }
+
+        function getRandomColor() {
+            const colors = ['#ff6b6b', '#4ecdc4', '#ffbe0b', '#fb5607', '#8338ec', '#3a86ff', '#ff006e', '#ff70a6', '#70d6ff', '#ffd166', '#06d6a0'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+    </script>
+</body>
+</html>
